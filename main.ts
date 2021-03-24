@@ -11,6 +11,9 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Checkpoint, function (sprite, ot
         Notification.notify("Checkpoint " + sprites.readDataNumber(sprite, "checkpoints_obtained") + "/" + checkpoint_count + " obtained! ", 1, assets.image`mini_checkpoint_flag`)
     })
 })
+scene.onHitWall(SpriteKind.Player, function (sprite, location) {
+    scene.cameraShake(2, 100)
+})
 function make_car (up_image: Image, right_image: Image, down_image: Image, left_image: Image, _type: number) {
     sprite_car = sprites.create(up_image, _type)
     character.runFrames(
@@ -41,10 +44,10 @@ function make_car (up_image: Image, right_image: Image, down_image: Image, left_
     sprites.setDataNumber(sprite_car, "checkpoints_obtained", 0)
     return sprite_car
 }
-function enable_driving (en: boolean) {
+function enable_driving (en: boolean, speed_multiplier: number) {
     driving_enabled = en
     if (en) {
-        controller.moveSprite(sprite_player, player_speed, player_speed)
+        controller.moveSprite(sprite_player, player_speed * speed_multiplier, player_speed * speed_multiplier)
     } else {
         controller.moveSprite(sprite_player, 0, 0)
     }
@@ -58,12 +61,32 @@ function make_forest_map () {
     }
     initialize_checkpoints()
 }
+function is_on_road (car: Sprite) {
+    for (let tiles2 of [
+    assets.tile`center_road`,
+    assets.tile`upward_start`,
+    assets.tile`finish_line`,
+    assets.tile`left_side_road`,
+    assets.tile`right_side_road`,
+    assets.tile`top_side_road`,
+    assets.tile`bottom_side_road`,
+    assets.tile`top_left_corner_road`,
+    assets.tile`top_right_corner_road`,
+    assets.tile`bottom_right_corner_road`,
+    assets.tile`bottom_left_corner_road`
+    ]) {
+        if (car.tileKindAt(TileDirection.Center, tiles2)) {
+            return true
+        }
+    }
+    return false
+}
 function initialize_checkpoints () {
     checkpoint_count = tiles.getTilesByType(assets.tile`center_road_checkpoint`).length
-    tiles.coverAllTiles(assets.tile`center_road_checkpoint`, assets.tile`center_road`)
     for (let location of tiles.getTilesByType(assets.tile`center_road_checkpoint`)) {
         sprite_checkpoint = sprites.create(assets.image`checkpoint_flag`, SpriteKind.Checkpoint)
         tiles.placeOnTile(sprite_checkpoint, location)
+        tiles.setTileAt(location, assets.tile`center_road`)
     }
 }
 function get_last_checkpoint (car: Sprite) {
@@ -72,7 +95,7 @@ function get_last_checkpoint (car: Sprite) {
 scene.onOverlapTile(SpriteKind.Player, assets.tile`finish_line`, function (sprite, location) {
     timer.throttle("check_win", 2000, function () {
         if (sprites.readDataNumber(sprite, "checkpoints_obtained") == checkpoint_count) {
-            enable_driving(false)
+            enable_driving(false, 1)
             sprite.vy = player_speed * -1
             sprite.vx = 0
             timer.after(100, function () {
@@ -96,9 +119,23 @@ let starting_tile: Image = null
 let sprite_player: Sprite = null
 let player_speed = 0
 player_speed = 150
+let in_game = false
 make_forest_map()
 sprite_player = make_car(assets.image`red_car_up`, assets.image`red_car_right`, assets.image`red_car_down`, assets.image`red_car_left`, SpriteKind.Player)
-enable_driving(true)
+enable_driving(true, 1)
 scene.cameraFollowSprite(sprite_player)
 tiles.placeOnRandomTile(sprite_player, starting_tile)
 update_last_checkpoint(sprite_player)
+in_game = true
+game.onUpdateInterval(100, function () {
+    if (in_game) {
+        if (is_on_road(sprite_player)) {
+            enable_driving(true, 1)
+        } else {
+            enable_driving(true, 0.6)
+            if (character.matchesRule(sprite_player, character.rule(Predicate.Moving))) {
+                sprite_player.startEffect(effects.spray, 100)
+            }
+        }
+    }
+})

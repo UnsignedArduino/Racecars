@@ -1,8 +1,14 @@
 namespace SpriteKind {
     export const Checkpoint = SpriteKind.create()
 }
-function make_car (up_image: Image, right_image: Image, down_image: Image, left_image: Image) {
-    sprite_car = sprites.create(up_image, SpriteKind.Player)
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Checkpoint, function (sprite, otherSprite) {
+    update_last_checkpoint(sprite)
+    sprites.changeDataNumberBy(sprite, "checkpoints_obtained", 1)
+    sprite.startEffect(effects.halo, 5000)
+    otherSprite.destroy()
+})
+function make_car (up_image: Image, right_image: Image, down_image: Image, left_image: Image, _type: number) {
+    sprite_car = sprites.create(up_image, _type)
     character.runFrames(
     sprite_car,
     [up_image],
@@ -28,6 +34,7 @@ function make_car (up_image: Image, right_image: Image, down_image: Image, left_
     character.rule(Predicate.MovingLeft)
     )
     update_last_checkpoint(sprite_car)
+    sprites.setDataNumber(sprite_car, "checkpoints_obtained", 0)
     return sprite_car
 }
 function enable_driving (en: boolean) {
@@ -71,7 +78,7 @@ let sprite_player: Sprite = null
 let player_speed = 0
 player_speed = 150
 make_forest_map()
-sprite_player = make_car(assets.image`red_car_up`, assets.image`red_car_right`, assets.image`red_car_down`, assets.image`red_car_left`)
+sprite_player = make_car(assets.image`red_car_up`, assets.image`red_car_right`, assets.image`red_car_down`, assets.image`red_car_left`, SpriteKind.Player)
 enable_driving(true)
 scene.cameraFollowSprite(sprite_player)
 tiles.placeOnRandomTile(sprite_player, starting_tile)

@@ -8,7 +8,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Checkpoint, function (sprite, ot
     otherSprite.destroy()
     timer.background(function () {
         Notification.waitForNotificationFinish()
-        Notification.notify("Checkpoint " + sprites.readDataNumber(sprite, "checkpoints_obtained") + "/" + checkpoint_count + " obtained!", 1, assets.image`mini_checkpoint_flag`)
+        Notification.notify("Checkpoint " + sprites.readDataNumber(sprite, "checkpoints_obtained") + "/" + checkpoint_count + " obtained! ", 1, assets.image`mini_checkpoint_flag`)
     })
 })
 function make_car (up_image: Image, right_image: Image, down_image: Image, left_image: Image, _type: number) {

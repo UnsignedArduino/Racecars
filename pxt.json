@@ -7,7 +7,8 @@
         "tilemaps": "github:microsoft/pxt-tilemaps#v1.11.0",
         "character-animations": "github:riknoll/character-animations#v0.3.0",
         "arcade-tilemap-a-star": "github:jwunderl/arcade-tilemap-a-star#v0.3.5",
-        "arcade-sprite-util": "github:jwunderl/arcade-sprite-util#v0.1.1"
+        "arcade-sprite-util": "github:jwunderl/arcade-sprite-util#v0.1.1",
+        "arcade-sprite-data": "github:microsoft/arcade-sprite-data#v0.1.0"
     },
     "files": [
         "main.blocks",

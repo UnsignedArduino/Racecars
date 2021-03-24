@@ -24,6 +24,7 @@ function make_car (up_image: Image, right_image: Image, down_image: Image, left_
     100,
     character.rule(Predicate.MovingLeft)
     )
+    update_last_checkpoint(sprite_car)
     return sprite_car
 }
 function enable_driving (en: boolean) {
@@ -34,6 +35,9 @@ function enable_driving (en: boolean) {
         controller.moveSprite(sprite_player, 0, 0)
     }
 }
+function get_last_checkpoint (car: Sprite) {
+    return tiles.getTileLocation(sprites.readDataNumber(car, "last_checkpoint_col"), sprites.readDataNumber(car, "last_checkpoint_row"))
+}
 function make_map () {
     scene.setBackgroundColor(7)
     tiles.setTilemap(tilemap`map`)
@@ -41,6 +45,10 @@ function make_map () {
     for (let location of tiles.getTilesByType(sprites.builtin.forestTiles0)) {
         tiles.setWallAt(location, true)
     }
+}
+function update_last_checkpoint (car: Sprite) {
+    sprites.setDataNumber(car, "last_checkpoint_col", tiles.locationXY(tiles.locationOfSprite(car), tiles.XY.column))
+    sprites.setDataNumber(car, "last_checkpoint_row", tiles.locationXY(tiles.locationOfSprite(car), tiles.XY.row))
 }
 let driving_enabled = false
 let sprite_car: Sprite = null
@@ -53,3 +61,4 @@ sprite_player = make_car(assets.image`red_car_up`, assets.image`red_car_right`, 
 enable_driving(true)
 scene.cameraFollowSprite(sprite_player)
 tiles.placeOnRandomTile(sprite_player, starting_tile)
+update_last_checkpoint(sprite_player)

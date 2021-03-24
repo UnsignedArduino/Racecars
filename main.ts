@@ -1,3 +1,6 @@
+namespace SpriteKind {
+    export const Checkpoint = SpriteKind.create()
+}
 function make_car (up_image: Image, right_image: Image, down_image: Image, left_image: Image) {
     sprite_car = sprites.create(up_image, SpriteKind.Player)
     character.runFrames(
@@ -35,28 +38,39 @@ function enable_driving (en: boolean) {
         controller.moveSprite(sprite_player, 0, 0)
     }
 }
-function get_last_checkpoint (car: Sprite) {
-    return tiles.getTileLocation(sprites.readDataNumber(car, "last_checkpoint_col"), sprites.readDataNumber(car, "last_checkpoint_row"))
-}
-function make_map () {
+function make_forest_map () {
     scene.setBackgroundColor(7)
     tiles.setTilemap(tilemap`map`)
     starting_tile = assets.tile`upward_start`
     for (let location of tiles.getTilesByType(sprites.builtin.forestTiles0)) {
         tiles.setWallAt(location, true)
     }
+    initialize_checkpoints()
+}
+function initialize_checkpoints () {
+    checkpoint_count = tiles.getTilesByType(assets.tile`center_road_checkpoint`).length
+    tiles.coverAllTiles(assets.tile`center_road_checkpoint`, assets.tile`center_road`)
+    for (let location of tiles.getTilesByType(assets.tile`center_road_checkpoint`)) {
+        sprite_checkpoint = sprites.create(assets.image`checkpoint_flag`, SpriteKind.Checkpoint)
+        tiles.placeOnTile(sprite_checkpoint, location)
+    }
+}
+function get_last_checkpoint (car: Sprite) {
+    return tiles.getTileLocation(sprites.readDataNumber(car, "last_checkpoint_col"), sprites.readDataNumber(car, "last_checkpoint_row"))
 }
 function update_last_checkpoint (car: Sprite) {
     sprites.setDataNumber(car, "last_checkpoint_col", tiles.locationXY(tiles.locationOfSprite(car), tiles.XY.column))
     sprites.setDataNumber(car, "last_checkpoint_row", tiles.locationXY(tiles.locationOfSprite(car), tiles.XY.row))
 }
+let sprite_checkpoint: Sprite = null
+let checkpoint_count = 0
 let driving_enabled = false
 let sprite_car: Sprite = null
 let starting_tile: Image = null
 let sprite_player: Sprite = null
 let player_speed = 0
 player_speed = 150
-make_map()
+make_forest_map()
 sprite_player = make_car(assets.image`red_car_up`, assets.image`red_car_right`, assets.image`red_car_down`, assets.image`red_car_left`)
 enable_driving(true)
 scene.cameraFollowSprite(sprite_player)

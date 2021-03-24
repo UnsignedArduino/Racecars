@@ -70,17 +70,23 @@
         "tilemapTile": true,
         "displayName": "finish_line"
     },
-    "tile12": {
-        "data": "hwQQABAAAAC7u7u7u7u7uxsRsbu7u7u7GxGxu7u7u7sbsbu7u7u7uxuxu7u7u7u7G7G7u7u7u7sbsbu7u7u7uxuxu7u7u7u7G7G7u7u7u7sbsbu7u7u7uxuxu7u7u7u7G7G7u7u7u7sbsbu7u7u7uxsRsbu7u7u7GxGxu7u7u7u7u7u7u7u7uw==",
-        "mimeType": "image/x-mkcd-f4",
-        "tilemapTile": true,
-        "displayName": "upward_start"
-    },
     "tile16": {
         "data": "hwQQABAAAAC7u7u7u7u7u1tVtVVVu7u7W7u1tbW7u7tbu7VVtbu7u7u7u7u7u7u7W1W1VVW7u7u7tbtbu7u7u1tVtbu1u7u7u7u7VVW7u7tbVbW7u7u7u7u1u7W7u7u7W1u1VVW7u7u7u7u1u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7uw==",
         "mimeType": "image/x-mkcd-f4",
         "tilemapTile": true,
         "displayName": "center_road_checkpoint"
+    },
+    "tile12": {
+        "data": "hwQQABAAAAC7u7u7u7u7u0tEtLu7u7u7S0S0u7u7u7tLtLu7u7u7u0u0u7u7u7u7S7S7u7u7u7tLtLu7u7u7u0u0u7u7u7u7S7S7u7u7u7tLtLu7u7u7u0u0u7u7u7u7S7S7u7u7u7tLtLu7u7u7u0tEtLu7u7u7S0S0u7u7u7u7u7u7u7u7uw==",
+        "mimeType": "image/x-mkcd-f4",
+        "tilemapTile": true,
+        "displayName": "upward_start"
+    },
+    "tile13": {
+        "data": "hwQQABAAAAC7u7u7u7u7uxsRsbu7u7u7GxGxu7u7u7sbsbu7u7u7uxuxu7u7u7u7G7G7u7u7u7sbsbu7u7u7uxuxu7u7u7u7G7G7u7u7u7sbsbu7u7u7uxuxu7u7u7u7G7G7u7u7u7sbsbu7u7u7uxsRsbu7u7u7GxGxu7u7u7u7u7u7u7u7uw==",
+        "mimeType": "image/x-mkcd-f4",
+        "tilemapTile": true,
+        "displayName": "upward_start_used"
     },
     "level1": {
         "id": "level1",
@@ -104,7 +110,8 @@
             "sprites.castle.tileGrass2",
             "sprites.builtin.forestTiles0",
             "myTiles.tile12",
-            "myTiles.tile16"
+            "myTiles.tile16",
+            "myTiles.tile13"
         ],
         "displayName": "map"
     },

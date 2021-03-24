@@ -1,5 +1,6 @@
 namespace SpriteKind {
     export const Checkpoint = SpriteKind.create()
+    export const AI = SpriteKind.create()
 }
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Checkpoint, function (sprite, otherSprite) {
     update_last_checkpoint(sprite)
@@ -52,6 +53,11 @@ function enable_driving (en: boolean, speed_multiplier: number) {
         controller.moveSprite(sprite_player, 0, 0)
     }
 }
+function make_ai_car () {
+    sprite_car = make_car(assets.image`red_car_up`, assets.image`red_car_right`, assets.image`red_car_down`, assets.image`red_car_left`, SpriteKind.AI)
+    tiles.placeOnRandomTile(sprite_car, starting_tile)
+    tiles.setTileAt(tiles.locationOfSprite(sprite_car), assets.tile`upward_start_used`)
+}
 function make_forest_map () {
     scene.setBackgroundColor(7)
     tiles.setTilemap(tilemap`map`)
@@ -65,6 +71,7 @@ function is_on_road (car: Sprite) {
     for (let tiles2 of [
     assets.tile`center_road`,
     assets.tile`upward_start`,
+    assets.tile`upward_start_used`,
     assets.tile`finish_line`,
     assets.tile`left_side_road`,
     assets.tile`right_side_road`,
@@ -81,6 +88,14 @@ function is_on_road (car: Sprite) {
     }
     return false
 }
+function sprite_overlapping_kind (target: Sprite, kind: number) {
+    for (let sprite of sprites.allOfKind(kind)) {
+        if (target.overlapsWith(sprite)) {
+            return true
+        }
+    }
+    return false
+}
 function initialize_checkpoints () {
     checkpoint_count = tiles.getTilesByType(assets.tile`center_road_checkpoint`).length
     for (let location of tiles.getTilesByType(assets.tile`center_road_checkpoint`)) {
@@ -88,6 +103,14 @@ function initialize_checkpoints () {
         tiles.placeOnTile(sprite_checkpoint, location)
         tiles.setTileAt(location, assets.tile`center_road`)
     }
+}
+function make_player () {
+    sprite_player = make_car(assets.image`red_car_up`, assets.image`red_car_right`, assets.image`red_car_down`, assets.image`red_car_left`, SpriteKind.Player)
+    enable_driving(true, 1)
+    scene.cameraFollowSprite(sprite_player)
+    tiles.placeOnRandomTile(sprite_player, starting_tile)
+    update_last_checkpoint(sprite_player)
+    tiles.setTileAt(tiles.locationOfSprite(sprite_player), assets.tile`upward_start_used`)
 }
 function get_last_checkpoint (car: Sprite) {
     return tiles.getTileLocation(sprites.readDataNumber(car, "last_checkpoint_col"), sprites.readDataNumber(car, "last_checkpoint_row"))
@@ -112,20 +135,23 @@ function update_last_checkpoint (car: Sprite) {
     sprites.setDataNumber(car, "last_checkpoint_row", tiles.locationXY(tiles.locationOfSprite(car), tiles.XY.row))
 }
 let sprite_checkpoint: Sprite = null
+let starting_tile: Image = null
+let sprite_player: Sprite = null
 let driving_enabled = false
 let sprite_car: Sprite = null
 let checkpoint_count = 0
-let starting_tile: Image = null
-let sprite_player: Sprite = null
 let player_speed = 0
 player_speed = 150
 let in_game = false
+let ai_car_count = 15
 make_forest_map()
-sprite_player = make_car(assets.image`red_car_up`, assets.image`red_car_right`, assets.image`red_car_down`, assets.image`red_car_left`, SpriteKind.Player)
-enable_driving(true, 1)
-scene.cameraFollowSprite(sprite_player)
-tiles.placeOnRandomTile(sprite_player, starting_tile)
-update_last_checkpoint(sprite_player)
+make_player()
+for (let index = 0; index < ai_car_count; index++) {
+    make_ai_car()
+}
+for (let location of tiles.getTilesByType(assets.tile`upward_start`)) {
+    tiles.setTileAt(location, assets.tile`upward_start_used`)
+}
 in_game = true
 game.onUpdateInterval(100, function () {
     if (in_game) {

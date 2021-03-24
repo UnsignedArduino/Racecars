@@ -25,9 +25,11 @@ namespace myTiles {
     //% fixedInstance jres blockIdentity=images._tile
     export const tile11 = image.ofBuffer(hex``);
     //% fixedInstance jres blockIdentity=images._tile
+    export const tile16 = image.ofBuffer(hex``);
+    //% fixedInstance jres blockIdentity=images._tile
     export const tile12 = image.ofBuffer(hex``);
     //% fixedInstance jres blockIdentity=images._tile
-    export const tile16 = image.ofBuffer(hex``);
+    export const tile13 = image.ofBuffer(hex``);
 
     helpers._registerFactory("tilemap", function(name: string) {
         switch(helpers.stringTrim(name)) {
@@ -129,7 +131,7 @@ namespace myTiles {
 ................................................................................................
 ................................................................................................
 ................................................................................................
-`, [myTiles.transparency16,myTiles.tile1,myTiles.tile2,myTiles.tile3,myTiles.tile11,myTiles.tile6,myTiles.tile4,myTiles.tile5,myTiles.tile7,myTiles.tile8,myTiles.tile9,myTiles.tile10,sprites.castle.tileGrass1,sprites.castle.tileGrass3,sprites.castle.tileGrass2,sprites.builtin.forestTiles0,myTiles.tile12,myTiles.tile16], TileScale.Sixteen);
+`, [myTiles.transparency16,myTiles.tile1,myTiles.tile2,myTiles.tile3,myTiles.tile11,myTiles.tile6,myTiles.tile4,myTiles.tile5,myTiles.tile7,myTiles.tile8,myTiles.tile9,myTiles.tile10,sprites.castle.tileGrass1,sprites.castle.tileGrass3,sprites.castle.tileGrass2,sprites.builtin.forestTiles0,myTiles.tile12,myTiles.tile16,myTiles.tile13], TileScale.Sixteen);
         }
         return null;
     })
@@ -159,10 +161,12 @@ namespace myTiles {
             case "tile6":return tile6;
             case "finish_line":
             case "tile11":return tile11;
-            case "upward_start":
-            case "tile12":return tile12;
             case "center_road_checkpoint":
             case "tile16":return tile16;
+            case "upward_start":
+            case "tile12":return tile12;
+            case "upward_start_used":
+            case "tile13":return tile13;
         }
         return null;
     })

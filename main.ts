@@ -6,6 +6,10 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Checkpoint, function (sprite, ot
     sprites.changeDataNumberBy(sprite, "checkpoints_obtained", 1)
     sprite.startEffect(effects.halo, 5000)
     otherSprite.destroy()
+    timer.background(function () {
+        Notification.waitForNotificationFinish()
+        Notification.notify("Checkpoint " + sprites.readDataNumber(sprite, "checkpoints_obtained") + "/" + checkpoint_count + " obtained!", 1, assets.image`mini_checkpoint_flag`)
+    })
 })
 function make_car (up_image: Image, right_image: Image, down_image: Image, left_image: Image, _type: number) {
     sprite_car = sprites.create(up_image, _type)
@@ -85,9 +89,9 @@ function update_last_checkpoint (car: Sprite) {
     sprites.setDataNumber(car, "last_checkpoint_row", tiles.locationXY(tiles.locationOfSprite(car), tiles.XY.row))
 }
 let sprite_checkpoint: Sprite = null
-let checkpoint_count = 0
 let driving_enabled = false
 let sprite_car: Sprite = null
+let checkpoint_count = 0
 let starting_tile: Image = null
 let sprite_player: Sprite = null
 let player_speed = 0

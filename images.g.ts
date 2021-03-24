@@ -114,6 +114,17 @@ namespace myImages {
 ......ff........................
 ......ff........................
 `;
+            case "image6":
+            case "mini_checkpoint_flag":return img`
+. f 2 . . . 2 2 
+. f 2 2 2 2 2 . 
+. f 2 2 2 2 . . 
+. f 2 2 2 2 . 2 
+. f . 2 2 2 2 . 
+. f . . . . . . 
+. f . . . . . . 
+. f . . . . . . 
+`;
         }
         return null;
     })

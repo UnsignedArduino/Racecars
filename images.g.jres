@@ -24,6 +24,11 @@
         "mimeType": "image/x-mkcd-f4",
         "displayName": "checkpoint_flag"
     },
+    "image6": {
+        "data": "hwQIAAgAAAAAAAAA/////yIiAAAgIgIAICICACAiAgAiAAIAAiAAAA==",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "mini_checkpoint_flag"
+    },
     "*": {
         "mimeType": "image/x-mkcd-f4",
         "dataEncoding": "base64",

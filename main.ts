@@ -65,6 +65,21 @@ function initialize_checkpoints () {
 function get_last_checkpoint (car: Sprite) {
     return tiles.getTileLocation(sprites.readDataNumber(car, "last_checkpoint_col"), sprites.readDataNumber(car, "last_checkpoint_row"))
 }
+scene.onOverlapTile(SpriteKind.Player, assets.tile`finish_line`, function (sprite, location) {
+    timer.throttle("check_win", 2000, function () {
+        if (sprites.readDataNumber(sprite, "checkpoints_obtained") == checkpoint_count) {
+            enable_driving(false)
+            sprite.vy = player_speed * -1
+            sprite.vx = 0
+            timer.after(100, function () {
+                scene.cameraFollowSprite(null)
+            })
+            timer.after(2000, function () {
+                game.over(true)
+            })
+        }
+    })
+})
 function update_last_checkpoint (car: Sprite) {
     sprites.setDataNumber(car, "last_checkpoint_col", tiles.locationXY(tiles.locationOfSprite(car), tiles.XY.column))
     sprites.setDataNumber(car, "last_checkpoint_row", tiles.locationXY(tiles.locationOfSprite(car), tiles.XY.row))
